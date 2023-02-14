@@ -16,7 +16,7 @@ const signUp = async (req, res) => {
     const { email, password, firstName, lastName } = req.body
     const users = await findUserByIdOrEmail({ email })
     if (users.length) {
-      return res.status(StatusCodes.CONFLICT).json({
+      return res.status(StatusCodes.BAD_REQUEST).json({
         message: 'Email already exist'
       })
     }
@@ -35,7 +35,7 @@ const signUp = async (req, res) => {
     const result = await findUserByIdOrEmail({ id: userIds[0] })
 
     if (!result.length) {
-      return res.status(StatusCodes.NOT_FOUND).json({
+      return res.status(StatusCodes.BAD_REQUEST).json({
         message: 'user not found'
       })
     }
@@ -62,7 +62,7 @@ const signIn = async (req, res) => {
     const { email, password } = req.body
     const users = await findUserByIdOrEmail({ email })
     if (!users.length) {
-      return res.status(StatusCodes.NOT_FOUND).json({
+      return res.status(StatusCodes.BAD_REQUEST).json({
         message: 'Email or password incorrect'
       })
     }
@@ -109,16 +109,32 @@ const signIn = async (req, res) => {
   }
 }
 
-// const signOut = async (req, res, next) => {
-//   try {
+const signOut = async (req, res, next) => {
+  try {
+    const { email } = req.auth
+    const users = await findUserByIdOrEmail({ email })
+    if (!users.length) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Email not found'
+      })
+    }
 
-//   } catch (e) {
-//     console.log(e)
-//     return next(e)
-//   }
-// }
+    const tokenResult = await findTokenByUserId({ userId: users[0].id })
+    if (tokenResult) {
+      await knex('tokens').where('userId', users[0].id).del()
+    }
+
+    return res.status(StatusCodes.NO_CONTENT).json({
+      message: 'Success'
+    })
+  } catch (e) {
+    console.log(e)
+    return next(e)
+  }
+}
 
 module.exports = {
   signUp,
-  signIn
+  signIn,
+  signOut
 }

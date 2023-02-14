@@ -1,21 +1,16 @@
 const express = require('express')
 const router = express.Router({})
 const { SignUpValidationSchema, SignInValidationSchema } = require('../validations')
-const { validateSchema } = require('../middlewares')
-const paramsContant = require('../constant/index')
+const validateSchema = require('../middlewares')
 const userCtrl = require('../controller')
 const { expressjwt: jwt } = require('express-jwt')
-const { StatusCodes } = require('http-status-codes')
+const { ALGOR_CONSTANT, REQUEST_PARAMS } = require('../constant/index')
 
-router.post('/sign-up', validateSchema(SignUpValidationSchema, paramsContant.BODY), userCtrl.signUp)
-router.post('/sign-in', validateSchema(SignInValidationSchema, paramsContant.BODY), userCtrl.signIn)
-router.get('/sign-out', jwt({
+router.post('/sign-up', validateSchema(SignUpValidationSchema, REQUEST_PARAMS.BODY), userCtrl.signUp)
+router.post('/sign-in', validateSchema(SignInValidationSchema, REQUEST_PARAMS.BODY), userCtrl.signIn)
+router.post('/sign-out', jwt({
   secret: process.env.TOKEN_SECRET,
-  algorithms: ['HS256']
-}), (req, res) => {
-  return res.status(StatusCodes.CREATED).json({
-    message: 'abc'
-  })
-})
+  algorithms: [ALGOR_CONSTANT]
+}), userCtrl.signOut)
 
 module.exports = router
