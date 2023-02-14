@@ -13,7 +13,7 @@ const knex = require('knex')({
   pool: { min: 0, max: 7 }
 })
 
-knex.raw('SELECT VERSION()').then(() => {
+knex.raw('SELECT VERSION()').then((...args) => {
   console.log('connect to database successfully')
 })
   .catch(err => {
