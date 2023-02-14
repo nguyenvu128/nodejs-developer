@@ -1,5 +1,1 @@
-const { SignupValidationSchema } = require('./user.schema')
-
-module.exports = {
-  SignupValidationSchema
-}
+module.exports = require('./user.schema')

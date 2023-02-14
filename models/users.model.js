@@ -8,7 +8,7 @@ const user = knex.schema.hasTable('users').then((exist) => {
       table.varchar('lastName', 30)
       table.varchar('email', 250).unique()
       table.varchar('password', 250)
-      table.timestamps()
+      table.timestamps(true, true)
     }).then(() => console.log('user table created'))
   }
 })

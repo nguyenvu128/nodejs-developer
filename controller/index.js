@@ -1,5 +1,1 @@
-const { signup } = require('./user.controller')
-
-module.exports = {
-  signup
-}
+module.exports = require('./user.controller')

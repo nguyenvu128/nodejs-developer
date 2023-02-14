@@ -11,7 +11,7 @@ const token = knex.schema.hasTable('users').then((exist) => {
         .inTable('users')
       table.varchar('refreshToken', 250)
       table.varchar('expiresIn', 64)
-      table.timestamps()
+      table.timestamps(true, true)
     }).then(() => console.log('table created'))
   }
 })
