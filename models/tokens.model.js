@@ -1,10 +1,10 @@
 const knex = require('../database')
 
-const token = knex.schema.hasTable('users').then((exist) => {
+const token = knex.schema.hasTable('tokens').then((exist) => {
   if (!exist) {
     return knex.schema.createTable('tokens', (table) => {
       table.increments('id').primary()
-      table.integer('userId').unsigned().notNullable()
+      table.integer('userId').unsigned().notNullable().unique('userId')
       table
         .foreign('userId')
         .references('id')

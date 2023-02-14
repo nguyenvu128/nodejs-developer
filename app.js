@@ -23,9 +23,10 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
+  const msg = err.message ? err.message : JSON.stringify(err)
   console.log(err)
   return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-    message: JSON.stringify(err)
+    message: msg
   })
 })
 

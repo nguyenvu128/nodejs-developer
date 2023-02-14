@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt')
 const knex = require('../database')
 const jwt = require('jsonwebtoken')
 const { StatusCodes } = require('http-status-codes')
-const { findUserByIdOrEmail } = require('../services')
+const { findUserByIdOrEmail, findTokenByUserId } = require('../services')
 const uuid = require('uuid')
 /**
  * This function will register new user
@@ -72,6 +72,12 @@ const signIn = async (req, res) => {
         message: 'Email or password incorrect'
       })
     }
+
+    const tokenResult = await findTokenByUserId({ userId: users[0].id })
+    if (tokenResult) {
+      await knex('tokens').where('userId', users[0].id).del()
+    }
+
     const refreshToken = uuid.v4()
     const token = jwt.sign({ email: users[0].email }, process.env.TOKEN_SECRET, { expiresIn: '1h' })
     // Create new Date instance
@@ -102,6 +108,15 @@ const signIn = async (req, res) => {
     })
   }
 }
+
+// const signOut = async (req, res, next) => {
+//   try {
+
+//   } catch (e) {
+//     console.log(e)
+//     return next(e)
+//   }
+// }
 
 module.exports = {
   signUp,

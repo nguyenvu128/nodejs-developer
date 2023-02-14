@@ -1,5 +1,6 @@
-const { findUserByIdOrEmail } = require('./user.service')
+const { findUserByIdOrEmail, findTokenByUserId } = require('./user.service')
 
 module.exports = {
-  findUserByIdOrEmail
+  findUserByIdOrEmail,
+  findTokenByUserId
 }

@@ -16,6 +16,18 @@ const findUserByIdOrEmail = async (data) => {
   }
 }
 
+const findTokenByUserId = async (data) => {
+  try {
+    return await knex('tokens').where({
+      ...data
+    })
+  } catch (e) {
+    console.log(e)
+    throw new Error(e)
+  }
+}
+
 module.exports = {
-  findUserByIdOrEmail
+  findUserByIdOrEmail,
+  findTokenByUserId
 }
