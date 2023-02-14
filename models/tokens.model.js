@@ -4,13 +4,13 @@ const token = knex.schema.hasTable('users').then((exist) => {
   if (!exist) {
     return knex.schema.createTable('tokens', (table) => {
       table.increments('id').primary()
-      table.integer('user_id').unsigned().notNullable()
+      table.integer('userId').unsigned().notNullable()
       table
-        .foreign('user_id')
+        .foreign('userId')
         .references('id')
         .inTable('users')
-      table.varchar('refresh_token', 250)
-      table.varchar('expires_in', 64)
+      table.varchar('refreshToken', 250)
+      table.varchar('expiresIn', 64)
       table.timestamps()
     }).then(() => console.log('table created'))
   }

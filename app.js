@@ -1,5 +1,6 @@
 require('dotenv').config()
-const createError = require('http-errors')
+const { StatusCodes } = require('http-status-codes')
+const http = require('http')
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
@@ -15,7 +16,9 @@ app.use('/', require('./routes/index'))
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404))
+  return res.status(StatusCodes.NOT_FOUND).json({
+    message: 'Not Found'
+  })
 })
 
 // error handler
@@ -27,6 +30,16 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500)
   res.render('error')
+})
+
+// get the port and set the port for the server
+const port = process.env.PORT || 3000
+app.set('port', port)
+
+// create server
+const server = http.createServer(app)
+server.listen(port, () => {
+  console.log(`Server is running on port ${port}`)
 })
 
 module.exports = app
