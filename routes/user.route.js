@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router({})
-const { SignUpValidationSchema, SignInValidationSchema } = require('../validations')
+const { SignUpValidationSchema, SignInValidationSchema, RefreshTokenValidationSchema } = require('../validations')
 const validateSchema = require('../middlewares')
 const userCtrl = require('../controller')
 const { expressjwt: jwt } = require('express-jwt')
@@ -12,5 +12,6 @@ router.post('/sign-out', jwt({
   secret: process.env.TOKEN_SECRET,
   algorithms: [ALGOR_CONSTANT]
 }), userCtrl.signOut)
+router.post('/refresh-token', validateSchema(RefreshTokenValidationSchema, REQUEST_PARAMS.BODY), userCtrl.getNewRefreshToken)
 
 module.exports = router

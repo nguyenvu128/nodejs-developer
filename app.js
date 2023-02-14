@@ -4,6 +4,7 @@ const http = require('http')
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
+const database = require('./database')
 
 const app = express()
 
@@ -36,8 +37,15 @@ app.set('port', port)
 
 // create server
 const server = http.createServer(app)
-server.listen(port, () => {
-  console.log(`Server is running on port ${port}`)
+
+database.raw('SELECT VERSION()').then((...args) => {
+  console.log('connect to database successfully')
+  server.listen(port, () => {
+    console.log(`Server is running on port ${port}`)
+  })
 })
+  .catch(err => {
+    console.log(err)
+  })
 
 module.exports = app

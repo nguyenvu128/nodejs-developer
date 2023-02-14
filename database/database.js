@@ -1,5 +1,4 @@
 
-require('dotenv').config()
 const knexStringCase = require('knex-stringcase')
 const knex = require('knex')(
   // this function will convert camelcase to snakecase
@@ -15,12 +14,5 @@ const knex = require('knex')(
     pool: { min: 0, max: 7 }
   })
 )
-
-knex.raw('SELECT VERSION()').then((...args) => {
-  console.log('connect to database successfully')
-})
-  .catch(err => {
-    console.log(err)
-  })
 
 module.exports = knex

@@ -13,7 +13,12 @@ const SignInValidationSchema = Joi.object().keys({
   password: Joi.string().required().min(8).max(30)
 })
 
+const RefreshTokenValidationSchema = Joi.object().keys({
+  refreshToken: Joi.string().required()
+})
+
 module.exports = {
   SignUpValidationSchema,
-  SignInValidationSchema
+  SignInValidationSchema,
+  RefreshTokenValidationSchema
 }
