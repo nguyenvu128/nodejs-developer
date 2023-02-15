@@ -39,7 +39,6 @@ const signUp = async (req, res, next) => {
       })
     }
     return res.status(StatusCodes.CREATED).json({
-      status: StatusCodes.CREATED,
       data: {
         id: result[0].id,
         firstName: result[0].firstName,
